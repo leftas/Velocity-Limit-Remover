@@ -1,0 +1,18 @@
+#pragma once
+#include "include.h"
+
+
+class Log
+{
+public:
+	enum Type{
+		Normal,
+		Debug,
+		Error,
+		FatalError
+	};
+	static void Log::Init(bool CreateConsole = true);
+	static void Log::Write(Log::Type type, const char* fmt, ...);
+private:
+	static bool m_Console;
+};
