@@ -1,7 +1,7 @@
 Velocity-Limit-Remover
 ============================
 
-This modification patchs velocity limit, forced by RAGE engine, in GTA V(support for GTA IV maybe later ?) 
+This modification patchs velocity limit, forced by RAGE engine, in GTA V also GTA IV, as well.
 
 ## Downloads
 
@@ -15,5 +15,5 @@ You can download and edit my code as you wanted, and if you want to your contrib
 
 MIT License
 Copyright (c) 2015 Leftas
-=======
+
 # Velocity-Limit-Remover
