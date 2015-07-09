@@ -2,24 +2,24 @@
 #include <time.h>
 
 char g_logFile[MAX_PATH];
-bool Log::m_Console;
+bool Log::s_bConsole;
 void Log::Init(bool createConsole)
 {
 	FILE* file;
 	memset(g_logFile, 0, sizeof(g_logFile));
 
-	if (GetCurrentDirectory(sizeof(g_logFile), g_logFile))
+	if (GetCurrentDirectoryA(sizeof(g_logFile), g_logFile))
 	{
 		strcat_s(g_logFile, "/VelocityLimitRemover.txt");
 		if ((fopen_s(&file, g_logFile, "w")) == 0)
 		{
-			fprintf_s(file, "     Velocity Limit Remover");
-			fprintf_s(file, "         (C) 2015 Leftas   ");
+			fprintf_s(file, "     Velocity Limit Remover\n");
+			fprintf_s(file, "         (C) 2015 Leftas   \n");
 			fclose(file);
 		}
 		else
 		{
-			MessageBox(0, "Failed to open VelocityLimitRemover.txt", "FATAL ERROR", MB_ICONERROR);
+			MessageBoxA(0, "Failed to open VelocityLimitRemover.txt", "FATAL ERROR", MB_ICONERROR);
 		}
 	}
 	else
@@ -30,19 +30,20 @@ void Log::Init(bool createConsole)
 	if (createConsole)
 	{
 		HWND handle = GetConsoleWindow();
-		if (!handle){
+		if (!handle)
+		{
+			ShowWindow(handle, SW_RESTORE);
+
+			ShowWindow(handle, SW_MAXIMIZE);
+
 			ShowWindow(handle, SW_SHOW);
 		}
 		else
 		{
 			AllocConsole();
-			if (!AttachConsole(GetCurrentProcessId()))
-			{
-				MessageBoxA(NULL, "Attaching console Failed", "ERROR", MB_OK);
-				ExitProcess(0);
-			}
+			AttachConsole(GetCurrentProcessId());
 		}
-		m_Console = true;
+		s_bConsole = true;
 	}
 }
 
@@ -86,11 +87,11 @@ void Log::Write(Log::Type type, const char* format, ...)
 	{
 		fprintf_s(file, "%s \n", logMessage);
 		fclose(file);
-		if (m_Console)
+		if (Log::s_bConsole)
 			printf_s("%s \n", logMessage);
 		if (type == Log::Type::Error || type == Log::Type::FatalError)
 		{
-			MessageBox(NULL, logMessage, logType, MB_ICONERROR);
+			MessageBoxA(NULL, logMessage, logType, MB_ICONERROR);
 			if (type == Log::Type::FatalError)
 			{
 				ExitProcess(0);

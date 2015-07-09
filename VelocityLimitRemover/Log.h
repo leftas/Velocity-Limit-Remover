@@ -1,7 +1,7 @@
 #pragma once
 #include "include.h"
-
-
+#ifndef LOG_H_
+#define LOG_H_
 class Log
 {
 public:
@@ -11,8 +11,9 @@ public:
 		Error,
 		FatalError
 	};
-	static void Log::Init(bool CreateConsole = true);
+	static void Log::Init(bool CreateConsole = false);
 	static void Log::Write(Log::Type type, const char* fmt, ...);
 private:
-	static bool m_Console;
+	static bool s_bConsole;
 };
+#endif
